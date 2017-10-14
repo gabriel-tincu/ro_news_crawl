@@ -6,7 +6,7 @@ import logging
 class AdevarulSpider(BaseNewsSpider):
     name = "adevarul"
     start_urls = [
-        "http://adevarul.ro/news/societate/mii-viroze-tara-vaccinul-antigripal-nu-ajuns-inca-medicii-familie-1_59e0c0635ab6550cb8171238/index.html"
+        "http://adevarul.ro/"
     ]
 
     def parse(self, response):

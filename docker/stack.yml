@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+    mongo:
+        image: mongo
+        ports:
+           - 27017:27017
+        volumes:
+           - /opt/mongo/data:/data/db
+    elasticsearch:
+        image: elasticsearch
+        ports:
+           - 9200:9200
+           - 9300:9300
+        volumes:
+           - /opt/elasticsearch/data/:/usr/share/elasticsearch/data
+
+    kibana:
+        image: kibana
+        ports:
+            - 5601:5601

@@ -8,6 +8,7 @@
 from scrapy.exceptions import DropItem
 import logging
 import elasticsearch
+import pymongo
 
 
 class NewsDuplicatePipeline:
@@ -43,3 +44,23 @@ class NewsESPipeline:
                 crawler.settings.get('ES_URL', 'http://localhost:9200'),
                 crawler.settings.get('ES_INDEX_NAME', 'default')
         )
+
+class NewsMongoPipeline:
+    def __init__(self, mongo_url, collection_name):
+        self.collection_name = collection_name
+        self.mongo_client = pymongo.MongoClient(host=mongo_url)
+        self.collection = self.mongo_client.get_database('default')[self.collection_name]
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(
+                crawler.settings.get('MONGO_URL', '127.0.0.1'),
+                crawler.settings.get('MONGO_COLLECTION', 'default')
+        )
+
+    def process_item(self, item):
+        try:
+            result = self.collection.insert_one(document=item)
+            logging.info('added doc to mongodb {}'.format(result.inserted_id))
+        except Exception as e:
+            logging.error('error inserting item in mongo {}'.format(e))

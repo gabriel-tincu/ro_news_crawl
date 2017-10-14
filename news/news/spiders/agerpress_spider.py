@@ -2,21 +2,22 @@ from scrapy import Spider, Request
 from scrapy.linkextractors import LinkExtractor
 
 
-class DigiSpider(Spider):
-    name = 'digi'
+class AgerpressSpider(Spider):
+    name = 'tvr'
     base_urls = [
-        'http://www.digi24.ro/'
+        'https://www.agerpres.ro'
     ]
 
     def parse(self, response):
-        extractor = LinkExtractor(allow_domains=['www.digi24.ro', 'digi24.ro'])
-        title = response.css('.h2::text').extract_first()
-        intro = response.css('strong::text').extract_first()
-        body = [x.strip() for x in response.css('.data-app-meta-article p::text').extract()]
+        extractor = LinkExtractor(allow_domains=['www.agerpres.ro', 'agerpres.ro'])
+        title = response.css('h1::text').extract_first()
+        intro = response.css('.intro::text').extract_first()
+        date_ro = response.css('time::text').extract_first()
+        body = [x.strip() for x in response.css('p::text').extract()]
         body = [x for x in body if x]
-        date_ro = response.css('#itemprop-datePublished::text').extract_first()
-        date_en = date_ro
-        tags = [x.strip() for x in response.css('#itemprop-articleSection a::text').extract()]
+        tags = [x.strip() for x in response.css('.float a::text').extract()]
+        tags = [x for x in tags if x]
+        date_en = response.xpath('//time/@datetime').extract_first()
         if title and tags and intro and body:
             data = {
                 'url': response.url,
@@ -26,7 +27,7 @@ class DigiSpider(Spider):
                 'title': title.strip(),
                 'intro': intro.strip(),
                 'body': '\n'.join(body),
-                'type': 'digi',
+                'type': AgerpressSpider.name,
                 'id': response.url
             }
             yield data
