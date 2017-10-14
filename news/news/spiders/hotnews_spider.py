@@ -33,4 +33,4 @@ class HotnewsSpider(Spider):
             }
             yield data
         for link in extractor.extract_links(response):
-            yield Request(link, callback=self.parse)
+            yield Request(link.url, callback=self.parse)

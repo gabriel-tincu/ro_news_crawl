@@ -1,9 +1,8 @@
 import scrapy
 from scrapy.linkextractors import LinkExtractor
-from .base_spider import BaseNewsSpider
 import logging
 
-class AdevarulSpider(BaseNewsSpider):
+class AdevarulSpider(scrapy.Spider):
     name = "adevarul"
     start_urls = [
         "http://adevarul.ro/"

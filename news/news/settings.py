@@ -16,8 +16,8 @@ BOT_NAME = 'news'
 SPIDER_MODULES = ['news.spiders']
 NEWSPIDER_MODULE = 'news.spiders'
 
-ES_URL = 'http://elasticsearch:9200'
-MONGO_URL = 'mongo'
+ES_URL = 'http://localhost:9200'
+MONGO_URL = 'localhost'
 MONGO_COLLECTION = 'default'
 
 
@@ -25,7 +25,7 @@ MONGO_COLLECTION = 'default'
 #USER_AGENT = 'news (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -33,7 +33,7 @@ ROBOTSTXT_OBEY = True
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 CONCURRENT_REQUESTS_PER_DOMAIN = 8
 #CONCURRENT_REQUESTS_PER_IP = 16
