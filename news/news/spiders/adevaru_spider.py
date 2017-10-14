@@ -1,7 +1,7 @@
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from .base_spider import BaseNewsSpider
-
+import logging
 
 class AdevarulSpider(BaseNewsSpider):
     name = "adevarul"
@@ -31,8 +31,17 @@ class AdevarulSpider(BaseNewsSpider):
                 'title': title,
                 'intro': intro,
                 'body': body,
+                'type': 'adevarul'
             }
-            self.index(data)
+            doc_id = response.url.split('_')[-1]
+            doc_id = doc_id.split('/')
+            if len(doc_id) == 2 and 'index' in doc_id[1]:
+                doc_id = doc_id[0]
+            else:
+                doc_id = response.url
+            data['id'] = doc_id
+            logging.info('got new document')
+            yield data
 
         for link in extractor.extract_links(response):
             yield scrapy.Request(link.url, callback=self.parse)
