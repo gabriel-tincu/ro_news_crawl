@@ -4,7 +4,7 @@ from scrapy.linkextractors import LinkExtractor
 
 class HotnewsSpider(Spider):
     name = 'hotnews'
-    base_urls = [
+    start_urls = [
         'http://www.hotnews.ro/'
     ]
 

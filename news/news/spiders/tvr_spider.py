@@ -4,7 +4,7 @@ from scrapy.linkextractors import LinkExtractor
 
 class TVRSpider(Spider):
     name = 'tvr'
-    base_urls = [
+    start_urls = [
         'http://stiri.tvr.ro'
     ]
 
@@ -29,5 +29,6 @@ class TVRSpider(Spider):
                 'id': response.url
             }
             yield data
+
         for link in extractor.extract_links(response):
             yield Request(link.url, callback=self.parse)

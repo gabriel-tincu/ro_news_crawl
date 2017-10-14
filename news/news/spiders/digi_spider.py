@@ -4,7 +4,7 @@ from scrapy.linkextractors import LinkExtractor
 
 class DigiSpider(Spider):
     name = 'digi'
-    base_urls = [
+    start_urls = [
         'http://www.digi24.ro/'
     ]
 
