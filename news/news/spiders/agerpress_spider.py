@@ -5,7 +5,7 @@ import scrapy
 class AgerpressSpider(scrapy.Spider):
     name = 'agerpres'
     start_urls = [
-        "http://agerpres.ro/"
+        "http://www.agerpres.ro/"
     ]
     def parse(self, response):
         extractor = LinkExtractor(allow_domains=['www.agerpres.ro', 'agerpres.ro'])
@@ -28,7 +28,7 @@ class AgerpressSpider(scrapy.Spider):
                 'title': title.strip(),
                 'intro': intro.strip(),
                 'body': '\n'.join(body),
-                'type': "foo",
+                'type': "agerpres",
                 'id': response.url
             }
             yield data

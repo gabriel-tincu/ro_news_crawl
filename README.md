@@ -11,6 +11,6 @@
      
 ### docker launch
    [install docker](https://www.docker.com/)
-   ```bash
+   ```bash 
    docker stack deploy -c docker/stack.yml crawl
    ```
