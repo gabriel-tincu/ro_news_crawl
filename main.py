@@ -6,15 +6,9 @@ from news.spiders.digi_spider import DigiSpider
 from news.spiders.tvr_spider import TVRSpider
 from news.spiders.protv_spider import ProTVSpider
 from news.spiders.realitatea_spider import RealitateaSpider
-from scrapy.utils.log import configure_logging
-from scrapy.settings import Settings
+from scrapy.utils.project import get_project_settings
 
-s = Settings()
-s.setmodule('news.settings')
-
-configure_logging(s)
-
-process = CrawlerProcess(s)
+process = CrawlerProcess(get_project_settings())
 
 process.crawl(AdevarulSpider)
 process.crawl(RealitateaSpider)
