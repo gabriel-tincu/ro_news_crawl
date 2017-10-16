@@ -4,6 +4,9 @@ from news.spiders.hotnews_spider import HotnewsSpider
 from news.spiders.agerpress_spider import AgerpressSpider
 from news.spiders.digi_spider import DigiSpider
 from news.spiders.tvr_spider import TVRSpider
+from news.spiders.protv_spider import ProTVSpider
+from news.spiders.realitatea_spider import RealitateaSpider
+
 
 import news.settings as default_settings
 
@@ -11,10 +14,10 @@ from scrapy.utils.log import configure_logging
 from scrapy.settings import Settings
 
 s = Settings({
-    'MONGO_URL': default_settings.MONGO_URL,
+    'MONGO_URL': 'mongo',
     'MONGO_COLLECTION': default_settings.MONGO_COLLECTION,
     'ITEM_PIPELINES': default_settings.ITEM_PIPELINES,
-    'ES_URL': default_settings.ES_URL,
+    'ES_URL': 'elasticsearch',
     'DOWNLOAD_DELAY': default_settings.DOWNLOAD_DELAY,
     'CONCURRENT_REQUESTS_PER_DOMAIN': default_settings.CONCURRENT_REQUESTS_PER_DOMAIN,
     'BOT_NAME': default_settings.BOT_NAME,
@@ -28,6 +31,8 @@ configure_logging(s)
 process = CrawlerProcess(s)
 
 process.crawl(AdevarulSpider)
+process.crawl(RealitateaSpider)
+process.crawl(ProTVSpider)
 process.crawl(HotnewsSpider)
 process.crawl(AgerpressSpider)
 process.crawl(DigiSpider)
