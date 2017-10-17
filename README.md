@@ -17,5 +17,5 @@
    
 ### TODO
   - [ ] use `scrapyd` to deploy
-  - [ ] have a look at deduplication and what it entices in case of service failure
+  - [x] have a look at deduplication and what it entices in case of service failure
   - [ ] figure out why ES doesn't play nicely inside docker
