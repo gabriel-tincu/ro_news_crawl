@@ -4,6 +4,7 @@ from urllib.parse import (
     urlparse
 )
 
+
 class MagnetSpider(scrapy.Spider):
     start_urls = [
         ''

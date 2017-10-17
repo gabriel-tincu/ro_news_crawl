@@ -12,31 +12,18 @@ import pymongo
 
 
 class NewsDuplicatePipeline:
-    def __init__(self):
-        self.id_set = set()
-
-    def process_item(self, item, spider):
-        try:
-            if 'id' not in item or item['id'] in self.id_set:
-                logging.error('dropping item with keys {}'.format(item.keys()))
-                raise DropItem()
-        except:
-            raise DropItem()
-        return item
-
-
-class NewsESPipeline:
     def __init__(self, es_url, index_name):
+        self.id_set = set()
+        self.es_client = elasticsearch.Elasticsearch(hosts=[es_url])
         self.index_name = index_name
         self.doc_type = 'default'
-        self.es_client = elasticsearch.Elasticsearch(hosts=[es_url])
+        self.logger = logging.getLogger(__name__)
 
     def process_item(self, item, spider):
-        try:
-            self.es_client.index(self.index_name, self.doc_type, item, item['id'])
-            logging.info('successfully indexed doc with id {}'.format(item['id']))
-        except Exception as e:
-            logging.error('error indexing doc with id {}: {}'.format(item['id'], e))
+        if item['id'] in self.id_set or self.es_client.exists(doc_type=self.doc_type, id=item['id'], index=self.index_name):
+            self.logger.info('skipping id {}'.format(item['id']))
+            raise DropItem()
+        return item
 
     @classmethod
     def from_crawler(cls, crawler):
@@ -45,8 +32,35 @@ class NewsESPipeline:
                 crawler.settings.get('ES_INDEX_NAME', 'default')
         )
 
+
+class NewsESPipeline:
+    def __init__(self, es_url, index_name):
+        self.logger = logging.getLogger(__name__)
+        self.index_name = index_name
+        self.doc_type = 'default'
+        self.es_client = elasticsearch.Elasticsearch(hosts=[es_url])
+
+    def process_item(self, item, spider):
+        if self.es_client.exists(doc_type=self.doc_type, id=item['id'], index=self.index_name):
+            self.logger.info('skipping id {}'.format(item['id']))
+            return
+        try:
+            self.es_client.index(self.index_name, self.doc_type, item, item['id'])
+            self.logger.info('successfully indexed doc with id {}'.format(item['id']))
+        except Exception as e:
+            self.logger.error('error indexing doc with id {}: {}'.format(item['id'], e))
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(
+                crawler.settings.get('ES_URL', 'http://localhost:9200'),
+                crawler.settings.get('ES_INDEX_NAME', 'default')
+        )
+
+
 class NewsMongoPipeline:
     def __init__(self, mongo_url, collection_name):
+        self.logger = logging.getLogger(__name__)
         self.collection_name = collection_name
         self.mongo_client = pymongo.MongoClient(host=mongo_url)
         self.collection = self.mongo_client.get_database('default')[self.collection_name]
@@ -61,6 +75,6 @@ class NewsMongoPipeline:
     def process_item(self, item):
         try:
             result = self.collection.insert_one(document=item)
-            logging.info('added doc to mongodb {}'.format(result.inserted_id))
+            self.logger.info('added doc to mongodb {}'.format(result.inserted_id))
         except Exception as e:
-            logging.error('error inserting item in mongo {}'.format(e))
+            self.logger.error('error inserting item in mongo {}'.format(e))

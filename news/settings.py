@@ -16,8 +16,8 @@ BOT_NAME = 'news'
 SPIDER_MODULES = ['news.spiders']
 NEWSPIDER_MODULE = 'news.spiders'
 
-ES_URL = 'http://elasticsearch:9200'
-MONGO_URL = 'mongo'
+ES_URL = 'http://localhost:9200'
+MONGO_URL = 'localhost'
 MONGO_COLLECTION = 'default'
 
 
