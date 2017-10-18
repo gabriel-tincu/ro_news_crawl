@@ -8,11 +8,22 @@
    pip install -r requirements.txt
    python main.py
    ```
+
+### docker build
+
+     ```/bin/bash
+     docker build -f docker/Dockerfile -t  news-parser-ro:<tag> .
+     docker tag news-parser-ro:<tag> my_prefix/news-parser-ro:<tag>
+     docker push my_prefix/news-parser-ro:<tag>
+     ```
      
 ### docker launch
    [install docker](https://www.docker.com/)
-   ```bash 
-   docker stack deploy -c docker/stack.yml crawl
+   
+   ```/bin/bash
+   docker stack deploy -c docker/stack.yml crawl   
+   ```
+   
    ```
    
 ### TODO

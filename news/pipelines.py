@@ -14,10 +14,11 @@ import pymongo
 class NewsDuplicatePipeline:
     def __init__(self, es_url, index_name):
         self.id_set = set()
-        self.es_client = elasticsearch.Elasticsearch(hosts=[es_url])
+        self.logger = logging.getLogger(__name__)
+        self.logger.info('starting with es host {}'.format(es_url))
+        self.es_client = elasticsearch.Elasticsearch(hosts=[es_url], http_auth=('elastic', 'changeme'))
         self.index_name = index_name
         self.doc_type = 'default'
-        self.logger = logging.getLogger(__name__)
 
     def has(self, item):
         return item['id'] in self.id_set or \
@@ -42,7 +43,8 @@ class NewsESPipeline:
         self.logger = logging.getLogger(__name__)
         self.index_name = index_name
         self.doc_type = 'default'
-        self.es_client = elasticsearch.Elasticsearch(hosts=[es_url])
+        self.logger.info('starting with es host {}'.format(es_url))
+        self.es_client = elasticsearch.Elasticsearch(hosts=[es_url], http_auth=('elastic', 'changeme'))
 
     def process_item(self, item, spider):
         if self.es_client.exists(doc_type=self.doc_type, id=item['id'], index=self.index_name):
