@@ -9,6 +9,7 @@ class AgerpressSpider(scrapy.Spider):
     start_urls = [
         "http://www.agerpres.ro/"
     ]
+
     def parse(self, response):
         extractor = LinkExtractor(allow_domains=['www.agerpres.ro', 'agerpres.ro'])
         title = response.css('#body h1::text').extract_first()

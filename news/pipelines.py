@@ -19,8 +19,12 @@ class NewsDuplicatePipeline:
         self.doc_type = 'default'
         self.logger = logging.getLogger(__name__)
 
+    def has(self, item):
+        return item['id'] in self.id_set or \
+               self.es_client.exists(doc_type=self.doc_type, id=item['id'], index=self.index_name)
+
     def process_item(self, item, spider):
-        if item['id'] in self.id_set or self.es_client.exists(doc_type=self.doc_type, id=item['id'], index=self.index_name):
+        if self.has(item):
             self.logger.info('skipping id {}'.format(item['id']))
             raise DropItem()
         return item
