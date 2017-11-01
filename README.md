@@ -11,21 +11,19 @@
 
 ### docker build
 
-     ```/bin/bash
-     docker build -f docker/Dockerfile -t  news-parser-ro:<tag> .
-     docker tag news-parser-ro:<tag> my_prefix/news-parser-ro:<tag>
-     docker push my_prefix/news-parser-ro:<tag>
-     ```
-     
+```bash
+docker build -f docker/Dockerfile -t  news-parser-ro:<tag> .
+docker tag news-parser-ro:<tag> my_prefix/news-parser-ro:<tag>
+docker push my_prefix/news-parser-ro:<tag>
+```
+
 ### docker launch
    [install docker](https://www.docker.com/)
-   
-   ```/bin/bash
-   docker stack deploy -c docker/stack.yml crawl   
-   ```
-   
-   ```
-   
+
+```/bin/bash
+docker stack deploy -c docker/stack.yml crawl
+```
+
 ### TODO
   - [ ] use `scrapyd` to deploy
   - [x] have a look at deduplication and what it entices in case of service failure
