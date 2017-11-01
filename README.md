@@ -20,7 +20,7 @@ docker push my_prefix/news-parser-ro:<tag>
 ### docker launch
    [install docker](https://www.docker.com/)
 
-```/bin/bash
+```bash
 docker stack deploy -c docker/stack.yml crawl
 ```
 
